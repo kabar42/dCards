@@ -4,15 +4,11 @@ import cards;
 
 void main()
 {
-    writeln("Hello World");
-    foreach(r ; Rank.min..Rank.max) {
-        writeln(r);
-    }
-    auto c = Card(Rank.Ten, Suit.Clubs);
-    writeln(c.toString());
-
+    auto deck = createStandardDeck();
     auto h = new Hand();
-    auto new_hand = new Hand(h);
-    h.add(c);
-    writeln(h);
+    auto all_hands = new Hand[0];
+
+    generateAllHands(deck, h, all_hands);
+
+    writeln("Hand count: ", all_hands.length);
 }

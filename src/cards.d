@@ -1,4 +1,6 @@
+import std.stdio;
 import std.string;
+import std.traits;
 
 enum Rank {
     Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
@@ -15,6 +17,18 @@ struct Card {
     string toString() {
         return format("%s of %s", rank, suit);
     }
+}
+
+Card[] createStandardDeck() {
+    Card[] deck = new Card[0];
+    foreach(immutable s ; [EnumMembers!Suit]) {
+        foreach(immutable r ; [EnumMembers!Rank]) {
+            Card[] new_card = new Card[1];
+            new_card[0] = Card(r, s);
+            deck ~= new_card;
+        }
+    }
+    return deck;
 }
 
 class Hand {
@@ -34,7 +48,7 @@ public:
         this.card_count = hand.card_count;
     }
 
-    bool isFull() {
+    bool isFull() const {
         bool full = false;
         if (card_count >= hand_size) {
             full = true;
@@ -62,5 +76,15 @@ public:
     }
 }
 
-void generateAllHands(Card[] deck, ref Hand hand, Hand[] all_hands) {
+void generateAllHands(Card[] deck, ref Hand hand, ref Hand[] all_hands) {
+    if (hand.isFull()) {
+        Hand[] new_hands = new Hand[1];
+        new_hands[0] = hand;
+        all_hands ~= new_hands;
+    } else if (deck.length > 0) {
+        Hand new_hand = new Hand(hand);
+        new_hand.add(deck[0]);
+        generateAllHands(deck[1..$], new_hand, all_hands);
+        generateAllHands(deck[1..$], hand, all_hands);
+    }
 }
