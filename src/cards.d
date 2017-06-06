@@ -33,11 +33,12 @@ Card[] createStandardDeck() {
 
 class Hand {
 private:
-    Card[] cards;
     const int hand_size = 5;
     int card_count;
 
 public:
+    Card[] cards;
+
     this() {
         cards = new Card[hand_size];
         card_count = 0;
