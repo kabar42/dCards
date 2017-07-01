@@ -147,7 +147,8 @@ void generateAllHands(Card[] deck, ref Hand hand, ref Hand[] all_hands) {
     } else if (deck.length > 0) {
         Hand new_hand = new Hand(hand);
         new_hand.add(deck[0]);
-        generateAllHands(deck[1..$], new_hand, all_hands);
-        generateAllHands(deck[1..$], hand, all_hands);
+        auto deck_slice = deck[1..$];
+        generateAllHands(deck_slice, new_hand, all_hands);
+        generateAllHands(deck_slice, hand, all_hands);
     }
 }
